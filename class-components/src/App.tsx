@@ -9,12 +9,12 @@ interface SearchresultI {
   url: string;
 }
 
-class App extends Component{
+class App extends Component {
   api: Api;
   count: number;
   searchResults: SearchresultI[];
   constructor(api: Api) {
-    super(api)
+    super(api);
     this.api = new Api();
     this.count = this.state.count;
     this.searchResults = this.state.searchResults;
@@ -30,29 +30,39 @@ class App extends Component{
     this.render();
   }
   render() {
-    // this.start();
-    return <div>
-     <SearchSection api={this.api} />
-     {this.state.searchResults.map((el: SearchresultI, index) => <SearchItem key={index} name={el.name} url={el.url} api={this.api}/>)}
-    </div> 
+    return (
+      <div>
+        <SearchSection api={this.api} />
+        <section className='search-items'>
+          {this.state.searchResults.map((el: SearchresultI, index) => (
+            <SearchItem
+              key={index}
+              name={el.name}
+              url={el.url}
+              api={this.api}
+            />
+          ))}
+        </section>
+      </div>
+    );
   }
-//sprites.front_default
   start() {
-    if (!localStorage.getItem('searchValue') || localStorage.getItem('searchResults')?.length === 0) {
+    if (
+      !localStorage.getItem('searchValue') ||
+      localStorage.getItem('searchResults')?.length === 0
+    ) {
       this.api.defaulsSearchResults().then((data) => {
         this.state.count = data.count;
         this.state.searchResults = data.results;
-        this.setState({searchResult: data.results})
+        this.setState({ searchResult: data.results });
         console.log(this.state.searchResults);
         this.render();
-      })
+      });
     }
   }
-
 }
 
 export default App;
-
 
 // const searchResults: { name: string; src: string; }[] = [];
 // this.api.defaulsSearchResults()
@@ -77,7 +87,7 @@ export default App;
 //         this.setState({searchResults: searchResults})
 //         // console.log(searchResults);
 //       })
-      
+
 //     return searchSrc;
 
 //   })

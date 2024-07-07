@@ -1,10 +1,16 @@
 import { Component } from "react";
 import Api from "../Api";
+import Stats from "../stats/Stats";
 
 interface SearchItemI {
   name: string,
   url: string,
   api: Api,
+}
+
+interface StatsI {
+  base_stat: number;
+  stat: {name: string}
 }
 
 class SearchItem extends Component {
@@ -25,14 +31,13 @@ class SearchItem extends Component {
 
   render() { 
     const {name} = this.props;
-    return <div className="item">
+    return <div className="search-item">
       <h2>{name}</h2>
       <img src={this.state.src} alt="pokemon image" />
       <h3>Stats</h3>
-      {/* <div>
-       <span>{this.state.stats[0].base_stat}</span>
-       <span>{this.state.stats[0].base_stat.stat.name}</span>
-      </div> */}
+      <div>
+      {this.state.stats.map((el: StatsI, index) => <Stats key={index} name={el.stat.name} value={el.base_stat}/>)}
+      </div>
     </div>
   }
 

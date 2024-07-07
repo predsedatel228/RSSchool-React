@@ -30,7 +30,7 @@ class Api {
       console.log('ошибка');
     })
     .then(data => {
-      // console.log(data)
+      console.log(data)
       return data;
     })
 
