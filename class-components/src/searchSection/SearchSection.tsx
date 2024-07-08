@@ -27,7 +27,7 @@ class SearchSection extends Component {
   }
 
   setItem(value:string) {
-    localStorage.setItem('searchValue', value);
+    localStorage.setItem('searchValue', value.toLowerCase().trim());
     const {callback} = this.props;
     callback();
   }
