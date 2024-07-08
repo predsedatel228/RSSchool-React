@@ -46,8 +46,8 @@ class SearchItem extends Component {
      const {api, url} = this.props;
      api.fetchImage(url).then(data =>{
       this.setState({src: data.sprites.front_default});
-      this.setState({stats: data.stats})
-     });
+      this.setState({stats: data.stats});
+     })
   }
 }
 
