@@ -28,13 +28,10 @@ class App extends Component {
   componentDidMount(): void {
     this.start();
   }
-  componentDidUpdate(): void {
-    this.render();
-  }
   render() {
     return (
       <div>
-        <SearchSection api={this.api} callback={this.try}/>
+        <SearchSection api={this.api} callback={this.searchValue}/>
         <section className='search-items'>
           {this.state.searchResults.map((el: SearchresultI, index) => (
             <SearchItem
@@ -56,33 +53,26 @@ class App extends Component {
       this.api.defaulsSearchResults().then((data) => {
         this.state.count = data.count;
         this.setState({ searchResults: data.results });
-        this.render();
       });
     } else {
       this.searchValue();
     }
   }
 
-  searchValue() {
+  searchValue = () => {
+    this.setState({ searchResults: [] });
     this.api.defaulsSearchResults()
     .then((data) => this.state.count = data.count)
     .then(() => this.api.fetchAll(this.state.count))
     .then(data => {
       const searchValue = localStorage.getItem('searchValue')?.toLowerCase().trim(); 
       if (searchValue) {
+        this.setState({ searchResults: []});
         const searchResults: never[] = Array.from(data.results.filter((el: SearchresultI) => el.name.includes(searchValue)));
         this.setState({ searchResults: searchResults});
-        // this.state.searchResults = searchResults;
-        console.log(searchResults, 'searchResults');
-        console.log(this.state.searchResults)
-        // this.render();
       }
 
     })
-  }
-
-  try = () => {
-    this.searchValue()
   }
 
 }

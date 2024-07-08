@@ -15,8 +15,7 @@ class SearchSection extends Component {
   state = {
     searchValue: localStorage.getItem('searchValue') || '',
   };
-  componentDidUpdate(): void {
-  }
+
   render() {
     const { searchValue } = this.state;
     return (
