@@ -3,6 +3,7 @@ import Api from '../Api';
 
 interface SearchSectionProps {
   api: Api;
+  callback:() => void;
 }
 
 class SearchSection extends Component {
@@ -14,15 +15,8 @@ class SearchSection extends Component {
   state = {
     searchValue: localStorage.getItem('searchValue') || '',
   };
-
-  // componentDidMount(): void {
-  //   console.log(this.state.searchValue + ' didmount')
-  // }
-
-  // componentDidUpdate(): void {
-  //   console.log(this.state.searchValue + ' didupdate')
-  // }
-
+  componentDidUpdate(): void {
+  }
   render() {
     const { searchValue } = this.state;
     return (
@@ -35,8 +29,10 @@ class SearchSection extends Component {
 
   setItem(value:string) {
     localStorage.setItem('searchValue', value);
-    // this.props.api.searchResults(value);
+    const {callback} = this.props;
+    callback();
   }
+
 
 }
 

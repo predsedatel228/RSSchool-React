@@ -36,6 +36,20 @@ class Api {
 
     return item;
   }
+
+  fetchAll(count: number) {
+    const result = fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${count}`)
+    .then(response => response.json())
+    .catch((err) => {
+      console.error(err);
+      console.log('ошибка');
+    })
+    .then(data => {
+      console.log(data)
+      return data;
+    });
+    return result;
+  }
 }
 
 export default Api;
