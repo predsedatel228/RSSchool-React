@@ -4,6 +4,7 @@ import Api from '../Api';
 interface SearchSectionProps {
   api: Api;
   callback:() => void;
+  setLoading: () => void;
 }
 
 class SearchSection extends Component {
@@ -34,6 +35,8 @@ class SearchSection extends Component {
   };
 
   setItem(value:string) {
+    const {setLoading} = this.props;
+    setLoading();
     localStorage.setItem('searchValue', value.toLowerCase().trim());
     const {callback} = this.props;
     callback();

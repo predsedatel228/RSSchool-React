@@ -32,7 +32,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SearchSection api={this.api} callback={this.searchValue} />
+        <SearchSection api={this.api} callback={this.searchValue} setLoading={this.setLoading} />
         {!this.state.loading && (
           <section className="search-items">
             {this.state.searchResults.map((el: SearchresultI, index) => (
@@ -95,7 +95,7 @@ class App extends Component {
   };
 
   setLoading = () => {
-    this.setState({ loading: false });
+    this.setState({ loading: true });
     console.log(this.state.loading);
   }
 }
