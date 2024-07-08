@@ -45,18 +45,15 @@ class App extends Component {
     );
   }
   start() {
-    console.log(localStorage.getItem('searchValue')?.length, 'длина')
     if (
       !localStorage.getItem('searchValue') ||
       localStorage.getItem('searchValue')?.length === 0
     ) {
-      console.log('1')
       this.api.defaulsSearchResults().then((data) => {
         this.state.count = data.count;
         this.setState({ searchResults: data.results });
       });
     } else {
-      console.log('2')
       this.searchValue();
     }
   }
