@@ -17,7 +17,7 @@ class Api {
       console.log('ошибка');
     })
     .then(data => {
-      console.log(data)
+      console.log(data, 'defaulsSearchResults')
       return data;
     });
     return result;
@@ -30,7 +30,7 @@ class Api {
       console.log('ошибка');
     })
     .then(data => {
-      console.log(data)
+      console.log(data, 'fetchImage')
       return data;
     })
 
@@ -45,7 +45,7 @@ class Api {
       console.log('ошибка');
     })
     .then(data => {
-      console.log(data)
+      console.log(data, 'fetchAll')
       return data;
     });
     return result;

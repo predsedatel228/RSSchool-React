@@ -15,13 +15,13 @@ interface StatsI {
 
 class SearchItem extends Component {
   props: SearchItemI;
+  src: string;
   constructor(props: SearchItemI) {
     super(props)
     this.props = props;
-
+    this.src = '';
   }
   state = {
-    src: '',
     stats: [],
   };
 
@@ -29,11 +29,15 @@ class SearchItem extends Component {
     this.fetchSrc();
   }
 
+  componentDidUpdate(): void {
+    this.render();
+  }
+
   render() { 
     const {name} = this.props;
     return <div className="search-item">
       <h2>{name}</h2>
-      <img src={this.state.src} alt="pokemon image" />
+      <img src={this.src} alt="pokemon image" />
       <h3>Stats</h3>
       <div>
       {this.state.stats.map((el: StatsI, index) => <Stats key={index} name={el.stat.name} value={el.base_stat}/>)}
@@ -45,9 +49,9 @@ class SearchItem extends Component {
      const {api, url} = this.props;
      api.fetchImage(url).then(data =>{
       this.setState({src: data.sprites.front_default})
+      this.src = data.sprites.front_default;
       this.setState({stats: data.stats})
-      console.log(this.state.src)
-     } )
+     }).then( ()=> this.render()) 
   }
 }
 

@@ -29,7 +29,7 @@ class App extends Component {
     this.start();
   }
   componentDidUpdate(): void {
-    // this.render();
+    this.render();
   }
   render() {
     return (
@@ -82,7 +82,7 @@ class App extends Component {
   }
 
   try = () => {
-    this.searchValue();
+    this.searchValue()
   }
 
 }
