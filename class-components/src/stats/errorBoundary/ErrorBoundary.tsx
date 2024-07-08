@@ -17,10 +17,11 @@ class ErrorBoundary extends Component<ErrorBoundaryPropsI, ErrorI> {
 
   render() {
     if (this.state.hasError) {
-      <div className="error-boundary">Houston, we have a problem</div>
+      return <div className="error-boundary">Houston, we have a problem</div>
     }
     return this.props.children
   }
 }
 
 export default ErrorBoundary;
+

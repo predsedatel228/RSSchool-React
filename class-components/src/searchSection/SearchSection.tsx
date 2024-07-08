@@ -22,9 +22,16 @@ class SearchSection extends Component {
       <section>
         <input type="text" defaultValue={searchValue} onChange={(e)=> this.setState({searchValue: e.target.value})} />
         <button type="button" onClick={()=> this.setItem(searchValue)}>Search</button>
+        <button type="button" onClick={this.errorButtonHandler}>Error</button>
       </section>
     );
   }
+
+  errorButtonHandler = () => {
+    this.setState(() => {
+      throw new Error("Synthetic Error");
+    });
+  };
 
   setItem(value:string) {
     localStorage.setItem('searchValue', value.toLowerCase().trim());
