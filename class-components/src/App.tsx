@@ -9,7 +9,6 @@ export interface SearchresultI {
   url: string;
 }
 
-
 class App extends Component {
   api: Api;
   count: number;
@@ -31,8 +30,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SearchSection api={this.api} callback={this.searchValue}/>
-        <section className='search-items'>
+        <SearchSection api={this.api} callback={this.searchValue} />
+        <section className="search-items">
           {this.state.searchResults.map((el: SearchresultI, index) => (
             <SearchItem
               key={index}
@@ -61,20 +60,30 @@ class App extends Component {
 
   searchValue = () => {
     this.setState({ searchResults: [] });
-    this.api.defaulsSearchResults()
-    .then((data) => this.state.count = data.count)
-    .then(() => this.api.fetchAll(this.state.count))
-    .then(data => {
-      const searchValue = localStorage.getItem('searchValue')?.toLowerCase().trim(); 
-      if (searchValue) {
-        this.setState({ searchResults: []});
-        const searchResults: never[] = Array.from(data.results.filter((el: SearchresultI) => el.name.includes(searchValue)));
-        this.setState({ searchResults: searchResults});
-      }
-
-    })
-  }
-
+    if (localStorage.getItem('searchValue')?.length === 0) {
+      this.start();
+    } else {
+      this.api
+        .defaulsSearchResults()
+        .then((data) => (this.state.count = data.count))
+        .then(() => this.api.fetchAll(this.state.count))
+        .then((data) => {
+          const searchValue = localStorage
+            .getItem('searchValue')
+            ?.toLowerCase()
+            .trim();
+          if (searchValue) {
+            this.setState({ searchResults: [] });
+            const searchResults: never[] = Array.from(
+              data.results.filter((el: SearchresultI) =>
+                el.name.includes(searchValue),
+              ),
+            );
+            this.setState({ searchResults: searchResults });
+          }
+        });
+    }
+  };
 }
 
 export default App;
