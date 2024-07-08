@@ -21,7 +21,7 @@ class SearchSection extends Component {
     return (
       <section>
         <input type="text" defaultValue={searchValue} onChange={(e)=> this.setState({searchValue: e.target.value})} />
-        <button type="button" onClick={()=> this.setItem(searchValue)}>Поиск</button>
+        <button type="button" onClick={()=> this.setItem(searchValue)}>Search</button>
       </section>
     );
   }
