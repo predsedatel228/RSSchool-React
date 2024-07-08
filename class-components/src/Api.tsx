@@ -4,9 +4,7 @@ class Api {
     .then(response => response.json())
     .catch((err) => {
       console.error(err);
-      console.log('ошибка');
     })
-    .then(data => console.log(data));
     return result;
   }
   defaulsSearchResults() {
@@ -14,12 +12,7 @@ class Api {
     .then(response => response.json())
     .catch((err) => {
       console.error(err);
-      console.log('ошибка');
     })
-    .then(data => {
-      console.log(data, 'defaulsSearchResults')
-      return data;
-    });
     return result;
   }
 
@@ -27,13 +20,7 @@ class Api {
     const item = fetch(url).then(response => response.json())
     .catch((err) => {
       console.error(err);
-      console.log('ошибка');
-    })
-    .then(data => {
-      console.log(data, 'fetchImage')
-      return data;
-    })
-
+    });
     return item;
   }
 
@@ -42,12 +29,7 @@ class Api {
     .then(response => response.json())
     .catch((err) => {
       console.error(err);
-      console.log('ошибка');
     })
-    .then(data => {
-      console.log(data, 'fetchAll')
-      return data;
-    });
     return result;
   }
 }
