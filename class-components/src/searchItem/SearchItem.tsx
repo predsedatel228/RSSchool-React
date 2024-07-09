@@ -35,7 +35,7 @@ class SearchItem extends Component {
     const {name} = this.props;
     return <div className="search-item">
       <h2>{name}</h2>
-      <img className="search-item-image" src={this.state.src} alt="pokemon image" />
+      <img className="search-item-image" src={this.state.src || noimage} alt="pokemon image" />
       <h3>Stats</h3>
       <div>
       {this.state.stats.map((el: StatsI, index) => <Stats key={index} name={el.stat.name} value={el.base_stat}/>)}
