@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Api from "../Api";
 import Stats from "../stats/Stats";
+import noimage from '../assets/noimage.png'
 
 interface SearchItemI {
   name: string,
@@ -34,7 +35,7 @@ class SearchItem extends Component {
     const {name} = this.props;
     return <div className="search-item">
       <h2>{name}</h2>
-      <img src={this.state.src} alt="pokemon image" />
+      <img className="search-item-image" src={this.state.src} alt="pokemon image" />
       <h3>Stats</h3>
       <div>
       {this.state.stats.map((el: StatsI, index) => <Stats key={index} name={el.stat.name} value={el.base_stat}/>)}
@@ -44,10 +45,16 @@ class SearchItem extends Component {
 
   fetchSrc() {
      const {api, url} = this.props;
-     api.fetchImage(url).then(data =>{
-      this.setState({src: data.sprites.front_default});
-      this.setState({stats: data.stats});
+
+      api.fetchImage(url).then(data =>{ 
+        this.setState({stats: data.stats});
+        this.setState({src: data.sprites.front_default});
+       })
+       .catch((error) => {
+          this.setState({src: `${noimage}`});
+        console.error(error)
      })
+
   }
 }
 
