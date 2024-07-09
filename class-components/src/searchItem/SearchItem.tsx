@@ -60,7 +60,6 @@ class SearchItem extends Component {
         this.setState({src: data.sprites.front_default || noimage});
        })
        .catch((error) => {
-          // this.setState({src: `${noimage}`});
         console.error(error)
      })
 
