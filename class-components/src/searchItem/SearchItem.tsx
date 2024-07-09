@@ -9,6 +9,15 @@ interface SearchItemI {
   api: Api,
 }
 
+const defaultStats = [
+{base_stat: '-', stat: {name: "hp"}},
+{base_stat: '-', stat: {name: "attack"}},
+{base_stat: '-', stat: {name: "defense"}},
+{base_stat: '-', stat: {name: "special-attack"}},
+{base_stat: '-', stat: {name: "special-defense"}},
+{base_stat: '-', stat: {name: "speed"}}
+]
+
 interface StatsI {
   base_stat: number;
   stat: {name: string}
@@ -47,11 +56,11 @@ class SearchItem extends Component {
      const {api, url} = this.props;
 
       api.fetchImage(url).then(data =>{ 
-        this.setState({stats: data.stats});
-        this.setState({src: data.sprites.front_default});
+        this.setState({stats: data.stats || defaultStats});
+        this.setState({src: data.sprites.front_default || noimage});
        })
        .catch((error) => {
-          this.setState({src: `${noimage}`});
+          // this.setState({src: `${noimage}`});
         console.error(error)
      })
 
