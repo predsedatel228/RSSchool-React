@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Api from '../Api';
 
 interface SearchSectionProps {
@@ -7,41 +7,27 @@ interface SearchSectionProps {
   setLoading: () => void;
 }
 
-class SearchSection extends Component {
-  props: SearchSectionProps;
-  constructor(props: SearchSectionProps) {
-    super(props)
-    this.props = props;
-  }
-  state = {
-    searchValue: localStorage.getItem('searchValue') || '',
+const SearchSection = (props: SearchSectionProps) => {
+   const [searchValue, setSearchValue] = useState(localStorage.getItem('searchValue') || '',)
+
+  const errorButtonHandler = () => {
+    setSearchValue(() => {throw new Error("Synthetic Error")});
   };
 
-  render() {
-    const { searchValue } = this.state;
-    return (
-      <section>
-        <input type="text" defaultValue={searchValue} onChange={(e)=> this.setState({searchValue: e.target.value})} />
-        <button type="button" onClick={()=> this.setItem(searchValue)}>Search</button>
-        <button type="button" onClick={this.errorButtonHandler}>Error</button>
-      </section>
-    );
-  }
-
-  errorButtonHandler = () => {
-    this.setState(() => {
-      throw new Error("Synthetic Error");
-    });
-  };
-
-  setItem(value:string) {
-    const {setLoading} = this.props;
+  const setItem = (value:string) => {
+    const {setLoading} = props;
     setLoading();
     localStorage.setItem('searchValue', value.toLowerCase().trim());
-    const {callback} = this.props;
+    const {callback} = props;
     callback();
   }
-
+    return (
+      <section>
+        <input type="text" defaultValue={searchValue} onChange={(e)=> setSearchValue(e.target.value)} />
+        <button type="button" onClick={()=> setItem(searchValue)}>Search</button>
+        <button type="button" onClick={errorButtonHandler}>Error</button>
+      </section>
+    );
 
 }
 
