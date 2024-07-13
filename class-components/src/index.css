@@ -71,3 +71,23 @@ button:focus-visible {
   width: 96px;
   height: 96px;
 }
+
+.content-container {
+  display: flex;
+}
+
+.item-details {
+  width: 100%;
+  
+}
+
+.search-items {
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: auto;
+}

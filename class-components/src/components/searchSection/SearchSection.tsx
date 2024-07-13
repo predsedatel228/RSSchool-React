@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Api from '../Api';
+import Api from '../../Api';
 
 interface SearchSectionProps {
   api: Api;
