@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { ContextType, useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import '../App.css';
 import SearchSection from '../components/searchSection/SearchSection';
 import SearchItem from '../components/searchItem/SearchItem';
@@ -18,6 +18,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const api = useMemo(() => new Api(), []);
   const [itemDetailUrl, setItemDetailUrl] = useState<string | null>(null);
+  const [rightTabHandler, setRightTabHandler] = useState(true);
   const setLoad = () => {
     setLoading(true);
   };
@@ -69,11 +70,11 @@ const Home = () => {
       {!loading && (
         <section className="search-items" /*onClick={searchItemsClickHandler}*/>
           {searchResults.map((el: SearchresultI, index) => (
-            <SearchItem key={index} name={el.name} url={el.url} api={api} setItemUrl={setItemDetailUrl}/>
+            <SearchItem key={index} name={el.name} url={el.url} api={api} rightTabHandler={rightTabHandler}  setRightTabHandler={setRightTabHandler} setItemUrl={setItemDetailUrl}/>
           ))}
         </section>
       )}
-      <Outlet context={{ itemDetailUrl }}/>
+      <Outlet context={ [itemDetailUrl, rightTabHandler, setRightTabHandler] satisfies  [string | null, boolean , Dispatch<SetStateAction<boolean>>]}/>
       </div>
       {loading && <img src={loadingImage} alt="loading" />}
     </div>
@@ -84,5 +85,5 @@ export default Home;
 
 
 export function useUrl() {
-  return useOutletContext<ContextType<never>>();
+  return useOutletContext<[string | null, boolean , Dispatch<SetStateAction<boolean>>]>();
 }

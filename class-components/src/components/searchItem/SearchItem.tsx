@@ -9,7 +9,8 @@ interface SearchItemI {
   url: string;
   api: Api;
   setItemUrl: Dispatch<SetStateAction<null | string>>;
-
+  setRightTabHandler: Dispatch<SetStateAction<boolean>>
+  rightTabHandler: boolean;
 }
 
 // const defaultStats = [
@@ -28,6 +29,7 @@ export interface StatsI {
 
 const SearchItem = (props: SearchItemI) => {
   const [src, setSrc] = useState('');
+  const {rightTabHandler, setRightTabHandler} = props;
   // const [stats, setStats] = useState([]);
   const { name, setItemUrl } = props;
   const navigate = useNavigate();
@@ -49,7 +51,14 @@ const SearchItem = (props: SearchItemI) => {
 
   return (
     <div className="search-item" onClick={() =>{
-      navigate('/elem');
+      if (rightTabHandler) {
+        navigate('/elem');
+        console.log('elem')
+      } else {
+        console.log('main')
+        navigate('/');
+      }
+      setRightTabHandler(!rightTabHandler);
       setItemUrl(url);
     } }>
       <h2>{name}</h2>

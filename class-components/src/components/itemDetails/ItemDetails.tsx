@@ -18,7 +18,7 @@ const defaultStats = [
 
 const ItemDetails = () => {
   const navigate = useNavigate();
-  const { itemDetailUrl } = useUrl();
+  const [itemDetailUrl, rightTabHandler, setRightTabHandler] = useUrl(); 
   const api = new Api();
   const [src, setSrc] = useState(noimage);
   const [stats, setStats] = useState([]);
@@ -27,7 +27,7 @@ const ItemDetails = () => {
   const fetchData = () => {
     setLoading(true);
     if (itemDetailUrl) {
-      api.fetchImage(itemDetailUrl).then((data) => {
+      api.fetchImage(itemDetailUrl as string).then((data) => {
         console.log(data);
         setName(data.name || 'no name');
         setSrc(data.sprites.front_default || noimage);
@@ -51,7 +51,10 @@ const ItemDetails = () => {
               <Stats key={index} name={el.stat.name} value={el.base_stat} />
             ))}
           </div>
-          <button onClick={() => navigate('/')}>Close</button>
+          <button onClick={() => {
+            navigate('/');
+            setRightTabHandler(!rightTabHandler)
+            }}>Close</button>
         </div>
       )}
 
