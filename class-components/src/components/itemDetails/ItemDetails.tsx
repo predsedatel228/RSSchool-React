@@ -18,7 +18,7 @@ const defaultStats = [
 
 const ItemDetails = () => {
   const navigate = useNavigate();
-  const [itemDetailUrl, rightTabHandler, setRightTabHandler] = useUrl(); 
+  const [itemDetailUrl, rightTabHandler, setRightTabHandler, page] = useUrl();
   const api = new Api();
   const [src, setSrc] = useState(noimage);
   const [stats, setStats] = useState([]);
@@ -32,7 +32,7 @@ const ItemDetails = () => {
         setName(data.name || 'no name');
         setSrc(data.sprites.front_default || noimage);
         setStats(data.stats || defaultStats);
-        setTimeout(() => setLoading(false), 200 ) 
+        setTimeout(() => setLoading(false), 200);
       });
     }
   };
@@ -51,10 +51,17 @@ const ItemDetails = () => {
               <Stats key={index} name={el.stat.name} value={el.base_stat} />
             ))}
           </div>
-          <button onClick={() => {
-            navigate('/');
-            setRightTabHandler(!rightTabHandler)
-            }}>Close</button>
+          <button
+            onClick={() => {
+              navigate({
+                pathname: '/',
+                search: `?frontpage=${page}`,
+              });
+              setRightTabHandler(!rightTabHandler);
+            }}
+          >
+            Close
+          </button>
         </div>
       )}
 

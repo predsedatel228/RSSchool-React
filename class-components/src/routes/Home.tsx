@@ -14,7 +14,12 @@ import SearchSection from '../components/searchSection/SearchSection';
 import SearchItem from '../components/searchItem/SearchItem';
 import loadingImage from '../assets/loading.svg';
 import Api from '../Api';
-import { Outlet, useOutletContext } from 'react-router-dom';
+import {
+  Outlet,
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from 'react-router-dom';
 
 export interface SearchresultI {
   name: string;
@@ -22,6 +27,7 @@ export interface SearchresultI {
 }
 
 const Home = () => {
+  const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -31,48 +37,63 @@ const Home = () => {
   const setLoad = () => {
     setLoading(true);
   };
-
   const [offcet, setOffcet] = useState(0);
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(0);
   const [defaultResults, setDefaultResults] = useState(true);
   const [notDefaultSearchResults, setNotDefaultSearchResults] = useState([]);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [page, setPage] = useState(1);
   const moveRightSearchResults = () => {
-    console.log(start, 'start', end, 'end',)
-     let currStart = start;
-     let currEnd = end;
-     const currSearchResults: SetStateAction<never[]> = [];
-     if (searchResults.length - currEnd >= 20) {
-      currStart+=20;
+    let currStart = start;
+    let currEnd = end;
+    const currSearchResults: SetStateAction<never[]> = [];
+    if (searchResults.length - currEnd >= 20) {
+      currStart += 20;
       currEnd = currEnd + 20;
-     } else {
+    } else {
       currStart = currEnd;
       currEnd = searchResults.length;
-     }
-     for (let i = currStart; i< currEnd; i++) {
+    }
+    for (let i = currStart; i < currEnd; i++) {
       currSearchResults[i] = searchResults[i];
-     }
-     setNotDefaultSearchResults(currSearchResults);
-     setEnd(currEnd);
-     setStart(currStart)
+    }
+    setPage(
+      Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20),
+    );
+    setNotDefaultSearchResults(currSearchResults);
+    setEnd(currEnd);
+    setStart(currStart);
+    navigate({
+      pathname: '/',
+      search: `?frontpage=${Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20)}`,
+    });
   };
 
-
   const moveLeftSearchResults = () => {
-    console.log(start, 'start', end, 'end')
-     const currStart = start - 20;
-     const currEnd = start;
-     const currSearchResults: SetStateAction<never[]> = [];
-     for (let i = currStart; i< currEnd; i++) {
+    const currStart = start - 20;
+    const currEnd = start;
+    const currSearchResults: SetStateAction<never[]> = [];
+    for (let i = currStart; i < currEnd; i++) {
       currSearchResults[i] = searchResults[i];
-     }
-     setNotDefaultSearchResults(currSearchResults);
-     setEnd(currEnd);
-     setStart(currStart)
+    }
+    setPage(
+      Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20),
+    );
+    setNotDefaultSearchResults(currSearchResults);
+    setSearchParams({
+      frontpage: `${Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20)}`,
+    });
+    setEnd(currEnd);
+    setStart(currStart);
+    navigate({
+      pathname: '/',
+      search: `?frontpage=${Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20)}`,
+    });
   };
 
   const searchValue = useCallback(() => {
+    console.log(searchParams);
     setStart(0);
     setEnd(0);
     setLoading(true);
@@ -87,7 +108,6 @@ const Home = () => {
         setSearchResults(data.results);
         setTimeout(() => setLoading(false), 1000);
         setLoading(false);
-        console.log(searchResults.length);
       });
     } else {
       setDefaultResults(false);
@@ -110,16 +130,15 @@ const Home = () => {
             setSearchResults(searchResults);
             if (searchResults.length <= 20) {
               setNotDefaultSearchResults(searchResults);
-              setEnd(searchResults.length)
+              setEnd(searchResults.length);
             } else {
-              const currNotDefaultSearchResults:SetStateAction<never[]> = [];
+              const currNotDefaultSearchResults: SetStateAction<never[]> = [];
               for (let i = 0; i < 20; i++) {
                 currNotDefaultSearchResults.push(searchResults[i]);
               }
               setEnd(20);
-              setNotDefaultSearchResults(currNotDefaultSearchResults)
+              setNotDefaultSearchResults(currNotDefaultSearchResults);
             }
-            console.log('searchresults.length ',searchResults.length);
           }
         })
         .then(() => setTimeout(() => setLoading(false), 1000));
@@ -145,6 +164,7 @@ const Home = () => {
                     rightTabHandler={rightTabHandler}
                     setRightTabHandler={setRightTabHandler}
                     setItemUrl={setItemDetailUrl}
+                    page={page}
                   />
                 ))}
               {!defaultResults &&
@@ -157,22 +177,36 @@ const Home = () => {
                     rightTabHandler={rightTabHandler}
                     setRightTabHandler={setRightTabHandler}
                     setItemUrl={setItemDetailUrl}
+                    page={page}
                   />
                 ))}
             </section>
             {defaultResults && (
               <div>
                 <button
-                  onClick={() => setOffcet(offcet - 20)}
+                  onClick={() => {
+                    setOffcet(offcet - 20);
+                    setPage((offcet)/ 20);
+                    console.log((offcet - 20)/20, 'offcet')
+                    setSearchParams({
+                      frontpage: `${(offcet)/20}`,
+                    });
+                  }}
                   disabled={offcet === 0 ? true : false}
                 >
-                  Prev
+                  Prev1
                 </button>
                 <button
-                  onClick={() => setOffcet(offcet + 20)}
-                  disabled={offcet+20> count ? true : false}
+                  onClick={() => {
+                    setOffcet(offcet + 20)
+                    setPage((offcet + 20)/ 20); 
+                    setSearchParams({
+                      frontpage: `${(offcet + 20)/20}`,
+                    });
+                  } }
+                  disabled={offcet + 20 > count ? true : false}
                 >
-                  Next
+                  Next1
                 </button>
               </div>
             )}
@@ -186,7 +220,7 @@ const Home = () => {
                 </button>
                 <button
                   onClick={moveRightSearchResults}
-                  disabled={end>= searchResults.length ? true : false}
+                  disabled={end >= searchResults.length ? true : false}
                 >
                   Next
                 </button>
@@ -197,10 +231,16 @@ const Home = () => {
 
         <Outlet
           context={
-            [itemDetailUrl, rightTabHandler, setRightTabHandler] satisfies [
+            [
+              itemDetailUrl,
+              rightTabHandler,
+              setRightTabHandler,
+              page,
+            ] satisfies [
               string | null,
               boolean,
               Dispatch<SetStateAction<boolean>>,
+              number,
             ]
           }
         />
@@ -213,6 +253,6 @@ export default Home;
 
 export function useUrl() {
   return useOutletContext<
-    [string | null, boolean, Dispatch<SetStateAction<boolean>>]
+    [string | null, boolean, Dispatch<SetStateAction<boolean>>, number]
   >();
 }

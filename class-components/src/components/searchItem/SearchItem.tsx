@@ -10,6 +10,7 @@ interface SearchItemI {
   setItemUrl: Dispatch<SetStateAction<null | string>>;
   setRightTabHandler: Dispatch<SetStateAction<boolean>>
   rightTabHandler: boolean;
+  page: number;
 }
 
 
@@ -23,13 +24,15 @@ const SearchItem = (props: SearchItemI) => {
   const {rightTabHandler, setRightTabHandler} = props;
   const { name, setItemUrl } = props;
   const navigate = useNavigate();
-  
-  const { api, url } = props;
+  // const [searchParams, setSearchParams] = useSearchParams();
+  const [id, setId] = useState(0);
+  const { api, url, page } = props;
   const fetchSrc = useCallback(() => {
     api
       .fetchImage(url)
       .then((data) => {
         setSrc(data.sprites.front_default || noimage);
+        setId(data.id)
       })
       .catch((error: Error) => {
         console.error(error);
@@ -41,11 +44,19 @@ const SearchItem = (props: SearchItemI) => {
   return (
     <div className="search-item" onClick={() =>{
       if (rightTabHandler) {
-        navigate('/elem');
+        // console.log(searchParams);
+        navigate({
+          pathname: '/elem',
+          search: `?frontpage=${page}&details=${id}`,
+        });
         console.log('elem')
+
       } else {
         console.log('main')
-        navigate('/');
+        navigate({
+          pathname: '/',
+          search: `?frontpage=${page}`,
+        });
       }
       setRightTabHandler(!rightTabHandler);
       setItemUrl(url);
