@@ -7,8 +7,8 @@ class Api {
     })
     return result;
   }
-  defaulsSearchResults() {
-    const result = fetch(`https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20`)
+  defaulsSearchResults(offcet: number) {
+    const result = fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offcet}&limit=20`)
     .then(response => response.json())
     .catch((err) => {
       console.error(err);
