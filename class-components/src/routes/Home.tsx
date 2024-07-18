@@ -20,6 +20,9 @@ import {
   useOutletContext,
   useSearchParams,
 } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { changePage } from '../store/slice';
+import { IRootState } from '../store/store';
 
 export interface SearchresultI {
   name: string;
@@ -43,7 +46,11 @@ const Home = () => {
   const [defaultResults, setDefaultResults] = useState(true);
   const [notDefaultSearchResults, setNotDefaultSearchResults] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
+  const page = useSelector( (state: IRootState) => state.pageSlice.value);
+  const setPage = (value: number) => dispatch(changePage(value))
+
+
   const moveRightSearchResults = () => {
     let currStart = start;
     let currEnd = end;
@@ -64,12 +71,15 @@ const Home = () => {
     setNotDefaultSearchResults(currSearchResults);
     setEnd(currEnd);
     setStart(currStart);
-    navigate({
-      pathname: '/',
-      search: `?frontpage=${Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20)}`,
-    });
   };
 
+  useEffect(() => nav(), [page]);
+  const nav = () => {
+    navigate({
+      pathname: '/',
+      search: `?frontpage=${page}`,
+    });
+  }
   const moveLeftSearchResults = () => {
     const currStart = start - 20;
     const currEnd = start;
@@ -81,15 +91,8 @@ const Home = () => {
       Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20),
     );
     setNotDefaultSearchResults(currSearchResults);
-    setSearchParams({
-      frontpage: `${Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20)}`,
-    });
     setEnd(currEnd);
     setStart(currStart);
-    navigate({
-      pathname: '/',
-      search: `?frontpage=${Math.ceil((searchResults.length - (searchResults.length - currEnd)) / 20)}`,
-    });
   };
 
   const searchValue = useCallback(() => {
@@ -164,7 +167,6 @@ const Home = () => {
                     rightTabHandler={rightTabHandler}
                     setRightTabHandler={setRightTabHandler}
                     setItemUrl={setItemDetailUrl}
-                    page={page}
                   />
                 ))}
               {!defaultResults &&
@@ -177,7 +179,6 @@ const Home = () => {
                     rightTabHandler={rightTabHandler}
                     setRightTabHandler={setRightTabHandler}
                     setItemUrl={setItemDetailUrl}
-                    page={page}
                   />
                 ))}
             </section>

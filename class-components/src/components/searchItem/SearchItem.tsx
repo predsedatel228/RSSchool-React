@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'reac
 import Api from '../../Api';
 import noimage from '../../assets/noimage.png';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../store/store';
 
 interface SearchItemI {
   name: string;
@@ -10,7 +12,6 @@ interface SearchItemI {
   setItemUrl: Dispatch<SetStateAction<null | string>>;
   setRightTabHandler: Dispatch<SetStateAction<boolean>>
   rightTabHandler: boolean;
-  page: number;
 }
 
 
@@ -24,9 +25,9 @@ const SearchItem = (props: SearchItemI) => {
   const {rightTabHandler, setRightTabHandler} = props;
   const { name, setItemUrl } = props;
   const navigate = useNavigate();
-  // const [searchParams, setSearchParams] = useSearchParams();
   const [id, setId] = useState(0);
-  const { api, url, page } = props;
+  const { api, url} = props;
+  const page = useSelector( (state: IRootState) => state.pageSlice.value);
   const fetchSrc = useCallback(() => {
     api
       .fetchImage(url)
@@ -44,7 +45,6 @@ const SearchItem = (props: SearchItemI) => {
   return (
     <div className="search-item" onClick={() =>{
       if (rightTabHandler) {
-        // console.log(searchParams);
         navigate({
           pathname: '/elem',
           search: `?frontpage=${page}&details=${id}`,
