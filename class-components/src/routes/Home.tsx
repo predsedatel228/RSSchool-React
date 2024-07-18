@@ -23,6 +23,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { changePage } from '../store/pageReducer';
 import { IRootState } from '../store/store';
+import Dashboard from '../components/dashboard/Dashboard';
 
 export interface SearchresultI {
   name: string;
@@ -152,6 +153,7 @@ const Home = () => {
   useEffect(() => searchValue(), [searchValue]);
   return (
     <div>
+      <Dashboard />
       <SearchSection api={api} callback={searchValue} setLoading={setLoad} />
       <div className="content-container">
         {loading && <img src={loadingImage} alt="loading" />}
