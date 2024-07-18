@@ -91,3 +91,11 @@ button:focus-visible {
   width: 200px;
   margin: auto;
 }
+
+.search-item {
+  border: none;
+}
+
+.search-item-container {
+  border: 1px solid gray;
+}

@@ -21,7 +21,7 @@ import {
   useSearchParams,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { changePage } from '../store/slice';
+import { changePage } from '../store/pageReducer';
 import { IRootState } from '../store/store';
 
 export interface SearchresultI {
@@ -48,6 +48,7 @@ const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const page = useSelector( (state: IRootState) => state.pageSlice.value);
+  // const selecledItems = useSelector( (state: IRootState) => state.selecledItems.value);
   const setPage = (value: number) => dispatch(changePage(value))
 
 

@@ -1,9 +1,12 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+/* eslint-disable react-compiler/react-compiler */
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import Api from '../../Api';
 import noimage from '../../assets/noimage.png';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store/store';
+import { removeItem, selectItem } from '../../store/selectedItemsReducer';
 
 interface SearchItemI {
   name: string;
@@ -27,7 +30,22 @@ const SearchItem = (props: SearchItemI) => {
   const navigate = useNavigate();
   const [id, setId] = useState(0);
   const { api, url} = props;
+  const [isSelect, setIsSelect] = useState(false);
+
   const page = useSelector( (state: IRootState) => state.pageSlice.value);
+  const dispatch = useDispatch();
+  
+  const selectItemHandler = () => {
+    if (!isSelect) {
+      api.fetchImage(url).then(data => dispatch(selectItem(data)))
+    } else {
+      dispatch(removeItem(id));
+    }
+  } 
+  const selecledItems = useSelector( (state: IRootState) => state.selectedItems.value);
+
+
+
   const fetchSrc = useCallback(() => {
     api
       .fetchImage(url)
@@ -42,17 +60,27 @@ const SearchItem = (props: SearchItemI) => {
 
   useEffect(() => fetchSrc(), [fetchSrc]);
 
+   const findItem = useMemo(() => selecledItems.find((el: { id: number; }) => el.id == id), [id, selecledItems])
+
+  useEffect(() =>{
+   if (findItem) {
+     setIsSelect(!isSelect);
+   } 
+   if (isSelect && !findItem) {
+    setIsSelect(!isSelect);
+   }
+  }, [findItem] )
+
   return (
+    <div className='search-item-container'>
+      <input type="checkbox" onChange={selectItemHandler} checked={isSelect? true : false}/>
     <div className="search-item" onClick={() =>{
       if (rightTabHandler) {
         navigate({
           pathname: '/elem',
           search: `?frontpage=${page}&details=${id}`,
         });
-        console.log('elem')
-
       } else {
-        console.log('main')
         navigate({
           pathname: '/',
           search: `?frontpage=${page}`,
@@ -67,6 +95,7 @@ const SearchItem = (props: SearchItemI) => {
         src={src || noimage}
         alt="pokemon image"
       />
+    </div>
     </div>
   );
 };
