@@ -3,36 +3,50 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
+  /* color-scheme: dark; */
+  /* color: rgba(255, 255, 255, 0.87);
+  background-color: #242424; */
+/* 
+  color: var(--body-text-color);
+  background-color: var(--body-background-color); */
+  /* font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  -moz-osx-font-smoothing: grayscale; */
+  --body-background-color:#242424;
+  --body-text-color: rgba(255, 255, 255, 0.87);
+  --button-backround-color:  #1a1a1a; 
 }
 
 body {
+  padding: 0;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+main {
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--body-text-color);
+  background-color: var(--body-background-color);
+
+}
+
+main.light {
+  --body-background-color:rgba(255, 255, 255, 0.87);
+  --body-text-color: #242424;
+  --button-backround-color:  #a2a2a2;
+    color: var(--body-text-color);
+    background-color: var(--body-background-color);
+}
+
+.toggle-theme {
+  margin-bottom: 20px;
 }
 
 button {
@@ -42,7 +56,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--button-backround-color);
+  color: var(--body-text-color);
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -54,18 +69,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
 
 .search-item-image {
   width: 96px;
@@ -80,9 +83,6 @@ button:focus-visible {
   width: 100%;
 }
 
-.search-items {
-  width: 100%;
-}
 
 .item {
   display: flex;
@@ -124,4 +124,21 @@ button:focus-visible {
   border-radius: 100%;
   background-color: red;
   font-size: 20px;
+}
+
+.search-items {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.search-item {
+  width: 200px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 20px;
+  margin-right: 20px;
 }

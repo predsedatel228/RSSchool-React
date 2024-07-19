@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store/store';
 import { unselectAll } from '../../store/selectedItemsReducer';
+import downloadCsv from '../../utils/downloadCSV';
 
 const Dashboard = () => {
   const selecledItems = useSelector(
@@ -16,7 +17,7 @@ const Dashboard = () => {
       }}
     >
       <button onClick={() => dispatch(unselectAll())}>Unselect all</button>
-      <button>Download</button>
+      <button onClick={() => downloadCsv(selecledItems)}>Download</button>
       <div className="selected-items-counter">{selecledItems.length}</div>
     </div>
   );
