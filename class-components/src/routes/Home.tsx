@@ -155,7 +155,7 @@ const Home = () => {
     <div>
       <Dashboard />
       <SearchSection api={api} callback={searchValue} setLoading={setLoad} />
-      <div className="content-container">
+      <div className="content-container" >
         {loading && <img src={loadingImage} alt="loading" />}
         {!loading && (
           <div>
@@ -197,10 +197,12 @@ const Home = () => {
                     });
                   }}
                   disabled={offcet === 0 ? true : false}
+                  data-testid='pagination-button'
                 >
                   Prev1
                 </button>
                 <button
+                  data-testid='pagination-button'
                   onClick={() => {
                     setOffcet(offcet + 20)
                     setPage((offcet + 20)/ 20); 
@@ -217,12 +219,14 @@ const Home = () => {
             {!defaultResults && (
               <div>
                 <button
+                  data-testid='pagination-button'
                   onClick={moveLeftSearchResults}
                   disabled={start === 0 ? true : false}
                 >
                   Prev
                 </button>
                 <button
+                  data-testid='pagination-button'
                   onClick={moveRightSearchResults}
                   disabled={end >= searchResults.length ? true : false}
                 >

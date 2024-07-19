@@ -40,7 +40,7 @@ const ItemDetails = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => fetchData(), [itemDetailUrl]);
   return (
-    <section className="item-details">
+    <section className="item-details" data-testid='item-details'>
       {!loading && (
         <div className="item">
           <h2>{name}</h2>

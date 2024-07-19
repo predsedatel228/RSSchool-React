@@ -35,10 +35,8 @@ const App = () => {
   );
 };
 
-// export default App;
 
 const WrappedApp = () => {
-  // const [darkTheme, setDarkTheme] = useState(true);
   return (
     <BrowserRouter>
       <ErrorBoundary>

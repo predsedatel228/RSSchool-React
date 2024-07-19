@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store/store';
 import { removeItem, selectItem } from '../../store/selectedItemsReducer';
 
-interface SearchItemI {
+export interface SearchItemI {
   name: string;
   url: string;
   api: Api;
@@ -72,7 +72,7 @@ const SearchItem = (props: SearchItemI) => {
   }, [findItem] )
 
   return (
-    <div className='search-item-container'>
+    <div className='search-item-container' data-testid='item'>
       <input type="checkbox" onChange={selectItemHandler} checked={isSelect? true : false}/>
     <div className="search-item" onClick={() =>{
       if (rightTabHandler) {
