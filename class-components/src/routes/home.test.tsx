@@ -41,10 +41,7 @@ describe('test Home page2', () => {
     render(
       <WrappedApp />
     );
-    // screen.debug();
     setTimeout(() => fireEvent.click(screen.getAllByTestId('item')[0]), 1000)
-    // data-testid='pagination-button'
-    // setTimeout(() => fireEvent.click(screen.getAllByTestId('pagination-button')[0]), 2000)
     setTimeout(() => {
       expect(screen.getByTestId('item-details')).toBe(2)
       screen.debug();
