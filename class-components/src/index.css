@@ -1,0 +1,133 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  --body-background-color:#242424;
+  --body-text-color: rgba(255, 255, 255, 0.87);
+  --button-backround-color:  #1a1a1a; 
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+main {
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--body-text-color);
+  background-color: var(--body-background-color);
+
+}
+
+main.light {
+  --body-background-color:rgba(255, 255, 255, 0.87);
+  --body-text-color: #242424;
+  --button-backround-color:  #a2a2a2;
+    color: var(--body-text-color);
+    background-color: var(--body-background-color);
+}
+
+.toggle-theme {
+  margin-bottom: 20px;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--button-backround-color);
+  color: var(--body-text-color);
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+.search-item-image {
+  width: 96px;
+  height: 96px;
+}
+
+.content-container {
+  display: flex;
+}
+
+.item-details {
+  width: 100%;
+}
+
+
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin: auto;
+}
+
+.search-item {
+  border: none;
+}
+
+.search-item-container {
+  border: 1px solid gray;
+}
+
+.dashboard {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin-left: auto;
+  width: 40vw;
+  background-color: rgba(227, 227, 227, 0.87);
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+
+.selected-items-counter {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid red;
+  border-radius: 100%;
+  background-color: red;
+  font-size: 20px;
+}
+
+.search-items {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.search-item {
+  width: 200px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 20px;
+  margin-right: 20px;
+}
