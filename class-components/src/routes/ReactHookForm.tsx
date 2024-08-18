@@ -23,6 +23,7 @@ const ReactHookForm = () => {
   };
   const countries = useSelector((state: IRootState) => state.countriesSlice);
   const [password, setPassword] = useState('');
+  const [showPasswordStrength, setShowPasswordStrength] = useState(false);
   return (
     <div>
       <p>React hook form</p>
@@ -39,7 +40,6 @@ const ReactHookForm = () => {
         <span className="error-message">
           {errors.name && errors.name.message}
         </span>
-
         <div className="form-field">
           <label htmlFor="email">E-mail</label>
           <input type="text" id={'email'} {...register('email')} />
@@ -47,23 +47,48 @@ const ReactHookForm = () => {
         <span className="error-message">
           {errors.email && errors.email.message}
         </span>
-
         <div className="form-field">
           <label htmlFor="age">Age</label>
-          <input type="number" className='input-number' min={1} id={'age'} {...register('age')} />
+          <input
+            type="number"
+            className="input-number"
+            min={1}
+            id={'age'}
+            {...register('age')}
+          />
         </div>
         <span className="error-message">
           {errors.age && errors.age.message}
         </span>
-
         <div className="form-field">
           <label htmlFor="password">Password</label>
-          <input type="password" id={'password'} {...register('password', { onChange: (e) => setPassword(e.target.value) })} />
+          <input
+            type="password"
+            id={'password'}
+            {...register('password', {
+              onChange: (e) => setPassword(e.target.value),
+            })}
+            onFocus={() => setShowPasswordStrength(true)}
+          />
+        </div>{' '}
+        <div
+          style={{
+            height: '62px',
+          }}
+        >
+          {showPasswordStrength && (
+            <div
+              style={{
+                visibility: !showPasswordStrength ? 'hidden' : 'visible',
+              }}
+            >
+              <PasswordStrengthMeter password={password} />
+            </div>
+          )}
         </div>
-        <PasswordStrengthMeter password={password} />
-        <span className="error-message">
+        <p className="error-message">
           {errors.password && errors.password.message}
-        </span>
+        </p>
         <div className="form-field">
           <label htmlFor="comfirmPassword">Confirm password</label>
           <input
@@ -77,24 +102,31 @@ const ReactHookForm = () => {
         </span>
         <fieldset className="form-field">
           <span>Gender</span>
-          <input type="radio" id="male"  value={'male'} {...register('gender')}/>
+          <input
+            type="radio"
+            id="male"
+            value={'male'}
+            {...register('gender')}
+          />
           <label htmlFor="male">Male</label>
-          <input type="radio" id="female" value={'female'} {...register('gender')}/>
+          <input
+            type="radio"
+            id="female"
+            value={'female'}
+            {...register('gender')}
+          />
           <label htmlFor="female">Female</label>
         </fieldset>
-
         <span className="error-message">
           {errors.gender && errors.gender.message}
         </span>
-
-        <div className="form-field">
+        <div className="form-field terms">
           <input type="checkbox" id={'accept'} {...register('accept')} />
-          <label htmlFor="accept">accept Terms and Conditions agreement</label>
+          <label htmlFor="accept" >Accept Terms and Conditions agreement</label>
         </div>
         <span className="error-message">
           {errors.accept && errors.accept.message}
         </span>
-
         <div className="form-field">
           <label htmlFor="image">Upload image</label>
           <input type="file" id={'image'} {...register('image')} />
@@ -102,7 +134,6 @@ const ReactHookForm = () => {
         <span className="error-message">
           {errors.image && errors.image.message}
         </span>
-
         <div className="form-field">
           <label htmlFor="country">Country</label>
           <input
@@ -122,7 +153,9 @@ const ReactHookForm = () => {
             return <option key={v}>{v}</option>;
           })}
         </datalist>
-        <button type="submit" disabled={isValid? false : true}>Submit</button>
+        <button type="submit" disabled={isValid ? false : true}>
+          Submit
+        </button>
       </form>
     </div>
   );
