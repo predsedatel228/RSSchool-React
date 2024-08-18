@@ -1,0 +1,185 @@
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Link, useNavigate } from 'react-router-dom';
+import { IForm } from '../types';
+import { validation } from '../validation';
+import { useDispatch, useSelector } from 'react-redux';
+import { IRootState } from '../store/store';
+import { useState } from 'react';
+import PasswordStrengthMeter from '../components/PasswordStrength';
+import { addData } from '../store/data';
+import convertImage from '../convertImage';
+
+const ReactHookForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<IForm>({
+    mode: 'onChange',
+    resolver: yupResolver(validation),
+  });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const onSubmit: SubmitHandler<IForm> = (data: IForm) => {
+    convertImage(data.image[0]).then((image) => {
+      const formResult = {
+        name: data.name,
+        age: data.age,
+        email: data.email,
+        password: data.password,
+        gender: data.gender,
+        accept: data.accept,
+        image: image,
+        country: data.country,
+      };
+      dispatch(addData(formResult));
+      navigate('/');
+    });
+  };
+  const countries = useSelector((state: IRootState) => state.countriesSlice);
+  const [password, setPassword] = useState('');
+  const [showPasswordStrength, setShowPasswordStrength] = useState(false);
+  return (
+    <div>
+      <p>React hook form</p>
+      <Link to="/">To Main page</Link>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
+        <div className="form-field">
+          <label htmlFor="name">Name</label>
+          <input type="text" id={'name'} {...register('name')} />
+        </div>
+        <span className="error-message">
+          {errors.name && errors.name.message}
+        </span>
+        <div className="form-field">
+          <label htmlFor="email">E-mail</label>
+          <input type="text" id={'email'} {...register('email')} />
+        </div>
+        <span className="error-message">
+          {errors.email && errors.email.message}
+        </span>
+        <div className="form-field">
+          <label htmlFor="age">Age</label>
+          <input
+            type="number"
+            className="input-number"
+            min={1}
+            id={'age'}
+            {...register('age')}
+          />
+        </div>
+        <span className="error-message">
+          {errors.age && errors.age.message}
+        </span>
+        <div className="form-field">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id={'password'}
+            {...register('password', {
+              onChange: (e) => setPassword(e.target.value),
+            })}
+            onFocus={() => setShowPasswordStrength(true)}
+          />
+        </div>{' '}
+        <div
+          style={{
+            height: '62px',
+          }}
+        >
+          {showPasswordStrength && (
+            <div
+              style={{
+                visibility: !showPasswordStrength ? 'hidden' : 'visible',
+              }}
+            >
+              <PasswordStrengthMeter password={password} />
+            </div>
+          )}
+        </div>
+        <p className="error-message">
+          {errors.password && errors.password.message}
+        </p>
+        <div className="form-field">
+          <label htmlFor="comfirmPassword">Confirm password</label>
+          <input
+            type="password"
+            id={'comfirmPassword'}
+            {...register('comfirmPassword')}
+          />
+        </div>
+        <span className="error-message">
+          {errors.comfirmPassword && errors.comfirmPassword.message}
+        </span>
+        <fieldset className="form-field gender-fieldset">
+          <span className='gender-heading'>Gender</span>
+          <div className='gender-container'>
+          <div className='gender-item'>
+            {' '}
+            <input
+              type="radio"
+              id="male"
+              value={'male'}
+              {...register('gender')}
+              className='gender-input'  
+            />
+            <label htmlFor="male" className='gender-label'>Male</label>
+          </div>
+          <div className='gender-item'>
+            {' '}
+            <input
+              type="radio"
+              id="female"
+              value={'female'}
+              {...register('gender')}
+              className='gender-input'           />
+            <label htmlFor="female" className='gender-label'>Female</label>
+          </div>
+          </div>
+        </fieldset>
+        <span className="error-message">
+          {errors.gender && errors.gender.message}
+        </span>
+        <div className="form-field terms">
+          <input type="checkbox" id={'accept'} {...register('accept')}  className='accept-input'/>
+          <label htmlFor="accept" className='accept-label'>Accept Terms and Conditions agreement</label>
+        </div>
+        <span className="error-message">
+          {errors.accept && errors.accept.message}
+        </span>
+        <div className="form-field">
+          <label htmlFor="image">Upload image</label>
+          <input type="file" id={'image'} {...register('image')} className='file-input'/>
+        </div>
+        <span className="error-message">
+          {errors.image && errors.image.message}
+        </span>
+        <div className="form-field">
+          <label htmlFor="country">Country</label>
+          <input
+            type="list"
+            id="country"
+            list="list"
+            size={10}
+            {...register('country')}
+            className="list"
+          />
+        </div>
+        <span className="error-message">
+          {errors.country && errors.country.message}
+        </span>
+        <datalist className="datalist" id="list">
+          {countries.map((v: string) => {
+            return <option key={v}>{v}</option>;
+          })}
+        </datalist>
+        <button type="submit" disabled={isValid ? false : true}>
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default ReactHookForm;
