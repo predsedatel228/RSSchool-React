@@ -71,3 +71,30 @@ button:focus-visible {
   display: flex;
   gap: 20px;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-message {
+  height: 30px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: red;
+  font-size: 12px;
+}
+.list::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+.input-number::-webkit-outer-spin-button,
+.input-number::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
