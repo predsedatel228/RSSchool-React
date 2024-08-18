@@ -15,7 +15,7 @@ const Main = () => {
 
       <div className="forms">
         {data.map((el: ISavedData, index: number) => (
-          <DataCard data={el} key={index}/>
+          <DataCard data={el} key={index} isNew={data.length-1 === index? true : false}/>
         ))}
       </div>
     </div>
