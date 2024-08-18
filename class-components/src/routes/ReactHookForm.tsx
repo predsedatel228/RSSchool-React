@@ -10,7 +10,7 @@ const ReactHookForm = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<IForm>({
     mode: 'onChange',
     resolver: yupResolver(validation),
@@ -118,7 +118,7 @@ const ReactHookForm = () => {
             return <option key={v}>{v}</option>;
           })}
         </datalist>
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={isValid? false : true}>Submit</button>
       </form>
     </div>
   );
