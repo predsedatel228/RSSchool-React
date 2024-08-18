@@ -154,24 +154,32 @@ const UncontrolledForm = () => {
         <span className="error-message">
           {errors.comfirmPassword && errors.comfirmPassword[0]}
         </span>
-        <fieldset className="form-field">
-          <span>Gender</span>
+        <fieldset className="form-field gender-fieldset">
+          <span className='gender-heading'>Gender</span>
+          <div className='gender-container'>
+          <div className='gender-item'>
           <input
             type="radio"
             id="male"
             value={'male'}
             onChange={handleGenderChange}
             checked={maleChecked}
+            className='gender-input'  
           />
-          <label htmlFor="male">Male</label>
+          <label htmlFor="male" className='gender-label'>Male</label>
+          </div>
+          <div className='gender-item'>
           <input
             type="radio"
             id="female"
             value={'female'}
             onChange={handleGenderChange}
             checked={femaleChecked}
+            className='gender-input'  
           />
-          <label htmlFor="female">Female</label>
+          <label htmlFor="female" className='gender-label'>Female</label>
+          </div>
+          </div>
         </fieldset>
         <span className="error-message">
           {errors.gender && errors.gender[0]}
@@ -181,15 +189,16 @@ const UncontrolledForm = () => {
             type="checkbox"
             id={'accept'}
             onChange={() => setAccept(!accept)}
+            className='accept-input'
           />
-          <label htmlFor="accept">Accept Terms and Conditions agreement</label>
+          <label htmlFor="accept" className='accept-label'>Accept Terms and Conditions agreement</label>
         </div>
         <span className="error-message">
           {errors.accept && errors.accept[0]}
         </span>
         <div className="form-field">
           <label htmlFor="image">Upload image</label>
-          <input type="file" id={'image'} />
+          <input type="file" id={'image'} className='file-input'/>
         </div>
         <span className="error-message">{errors.image && errors.image[0]}</span>
         <div className="form-field">

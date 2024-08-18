@@ -22,22 +22,20 @@ const ReactHookForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<IForm> = (data: IForm) => {
-    convertImage(data.image[0])
-      .then((image) => {
-        const formResult = {
-          name: data.name,
-          age: data.age,
-          email: data.email,
-          password: data.password,
-          gender: data.gender,
-          accept: data.accept,
-          image: image,
-          country: data.country,
-        }
-        dispatch(addData(formResult));
-        navigate('/');
-      })
-
+    convertImage(data.image[0]).then((image) => {
+      const formResult = {
+        name: data.name,
+        age: data.age,
+        email: data.email,
+        password: data.password,
+        gender: data.gender,
+        accept: data.accept,
+        image: image,
+        country: data.country,
+      };
+      dispatch(addData(formResult));
+      navigate('/');
+    });
   };
   const countries = useSelector((state: IRootState) => state.countriesSlice);
   const [password, setPassword] = useState('');
@@ -114,36 +112,45 @@ const ReactHookForm = () => {
         <span className="error-message">
           {errors.comfirmPassword && errors.comfirmPassword.message}
         </span>
-        <fieldset className="form-field">
-          <span>Gender</span>
-          <input
-            type="radio"
-            id="male"
-            value={'male'}
-            {...register('gender')}
-          />
-          <label htmlFor="male">Male</label>
-          <input
-            type="radio"
-            id="female"
-            value={'female'}
-            {...register('gender')}
-          />
-          <label htmlFor="female">Female</label>
+        <fieldset className="form-field gender-fieldset">
+          <span className='gender-heading'>Gender</span>
+          <div className='gender-container'>
+          <div className='gender-item'>
+            {' '}
+            <input
+              type="radio"
+              id="male"
+              value={'male'}
+              {...register('gender')}
+              className='gender-input'  
+            />
+            <label htmlFor="male" className='gender-label'>Male</label>
+          </div>
+          <div className='gender-item'>
+            {' '}
+            <input
+              type="radio"
+              id="female"
+              value={'female'}
+              {...register('gender')}
+              className='gender-input'           />
+            <label htmlFor="female" className='gender-label'>Female</label>
+          </div>
+          </div>
         </fieldset>
         <span className="error-message">
           {errors.gender && errors.gender.message}
         </span>
         <div className="form-field terms">
-          <input type="checkbox" id={'accept'} {...register('accept')} />
-          <label htmlFor="accept">Accept Terms and Conditions agreement</label>
+          <input type="checkbox" id={'accept'} {...register('accept')}  className='accept-input'/>
+          <label htmlFor="accept" className='accept-label'>Accept Terms and Conditions agreement</label>
         </div>
         <span className="error-message">
           {errors.accept && errors.accept.message}
         </span>
         <div className="form-field">
           <label htmlFor="image">Upload image</label>
-          <input type="file" id={'image'} {...register('image')} />
+          <input type="file" id={'image'} {...register('image')} className='file-input'/>
         </div>
         <span className="error-message">
           {errors.image && errors.image.message}
