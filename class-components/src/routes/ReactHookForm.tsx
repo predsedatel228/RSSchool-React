@@ -1,12 +1,14 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IForm } from '../types';
 import { validation } from '../validation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../store/store';
 import { useState } from 'react';
 import PasswordStrengthMeter from '../components/PasswordStrength';
+import { addData } from '../store/data';
+import convertImage from '../convertImage';
 
 const ReactHookForm = () => {
   const {
@@ -17,9 +19,25 @@ const ReactHookForm = () => {
     mode: 'onChange',
     resolver: yupResolver(validation),
   });
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onSubmit: SubmitHandler<IForm> = (data: IForm) => {
-    console.log(data);
+    convertImage(data.image[0])
+      .then((image) => {
+        const formResult = {
+          name: data.name,
+          age: data.age,
+          email: data.email,
+          password: data.password,
+          gender: data.gender,
+          accept: data.accept,
+          image: image,
+          country: data.country,
+        }
+        dispatch(addData(formResult));
+        navigate('/');
+      })
+
   };
   const countries = useSelector((state: IRootState) => state.countriesSlice);
   const [password, setPassword] = useState('');
@@ -28,11 +46,7 @@ const ReactHookForm = () => {
     <div>
       <p>React hook form</p>
       <Link to="/">To Main page</Link>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        // autoComplete="off"
-        className="form"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <div className="form-field">
           <label htmlFor="name">Name</label>
           <input type="text" id={'name'} {...register('name')} />
@@ -122,7 +136,7 @@ const ReactHookForm = () => {
         </span>
         <div className="form-field terms">
           <input type="checkbox" id={'accept'} {...register('accept')} />
-          <label htmlFor="accept" >Accept Terms and Conditions agreement</label>
+          <label htmlFor="accept">Accept Terms and Conditions agreement</label>
         </div>
         <span className="error-message">
           {errors.accept && errors.accept.message}

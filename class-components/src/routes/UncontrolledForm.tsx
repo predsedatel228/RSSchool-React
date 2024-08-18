@@ -1,12 +1,14 @@
 import { SetStateAction, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PasswordStrengthMeter from '../components/PasswordStrength';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../store/store';
 import { IForm } from '../types';
 import { validation } from '../validation';
 import { ValidationError } from 'yup';
 import getValidationErrors from '../getValidationErrors';
+import { addData } from '../store/data';
+import convertImage from '../convertImage';
 
 interface IError {
   name?: string[];
@@ -20,7 +22,10 @@ interface IError {
   country?: string[];
 }
 
-type inputdata = { preventDefault: () => void; target: { files: File[]; value: IForm; }[]; };
+type inputdata = {
+  preventDefault: () => void;
+  target: { files: File[]; value: IForm }[];
+};
 
 const UncontrolledForm = () => {
   const countries = useSelector((state: IRootState) => state.countriesSlice);
@@ -32,6 +37,8 @@ const UncontrolledForm = () => {
   const [accept, setAccept] = useState(false);
   const [errors, setErrors] = useState({} as IError);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleData = async (event: {
     preventDefault: () => void;
     target: {
@@ -51,23 +58,38 @@ const UncontrolledForm = () => {
       image: event.target[9].files,
       country: event.target[10].value,
     };
-    console.log(formData);
     const isValid = await validation.isValid(formData);
     if (isValid) {
-      setErrors({})
+      setErrors({});
+      convertImage(formData.image[0])
+      .then((image) => {
+        const formResult = {
+          name: formData.name,
+          age: formData.age,
+          email: formData.email,
+          password: formData.password,
+          gender: formData.gender,
+          accept: formData.accept,
+          image: image,
+          country: formData.country,
+        }
+        dispatch(addData(formResult));
+        navigate('/');
+      })
     }
 
     try {
       validation.validateSync(formData, { abortEarly: false });
     } catch (error) {
       if (error instanceof ValidationError) {
-        console.log(getValidationErrors(error));
         setErrors(getValidationErrors(error));
       }
     }
   };
 
-  const handleGenderChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+  const handleGenderChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setGender(e.target.value);
     if (e.target.value === 'male') {
       setMaleChecked(true);
@@ -124,15 +146,13 @@ const UncontrolledForm = () => {
             </div>
           )}
         </div>
-        <p className="error-message">
-        {errors.password && errors.password[0]}
-        </p>
+        <p className="error-message">{errors.password && errors.password[0]}</p>
         <div className="form-field">
           <label htmlFor="comfirmPassword">Confirm password</label>
           <input type="password" id={'comfirmPassword'} />
         </div>
         <span className="error-message">
-        {errors.comfirmPassword && errors.comfirmPassword[0]}
+          {errors.comfirmPassword && errors.comfirmPassword[0]}
         </span>
         <fieldset className="form-field">
           <span>Gender</span>
@@ -154,7 +174,7 @@ const UncontrolledForm = () => {
           <label htmlFor="female">Female</label>
         </fieldset>
         <span className="error-message">
-        {errors.gender && errors.gender[0]}
+          {errors.gender && errors.gender[0]}
         </span>
         <div className="form-field terms">
           <input
@@ -165,15 +185,13 @@ const UncontrolledForm = () => {
           <label htmlFor="accept">Accept Terms and Conditions agreement</label>
         </div>
         <span className="error-message">
-        {errors.accept && errors.accept[0]}
+          {errors.accept && errors.accept[0]}
         </span>
         <div className="form-field">
           <label htmlFor="image">Upload image</label>
           <input type="file" id={'image'} />
         </div>
-        <span className="error-message">
-        {errors.image && errors.image[0]}
-        </span>
+        <span className="error-message">{errors.image && errors.image[0]}</span>
         <div className="form-field">
           <label htmlFor="country">Country</label>
           <input
@@ -185,7 +203,7 @@ const UncontrolledForm = () => {
           />
         </div>
         <span className="error-message">
-        {errors.country && errors.country[0]}
+          {errors.country && errors.country[0]}
         </span>
         <datalist className="datalist" id="list">
           {countries.map((v: string) => {
