@@ -101,7 +101,7 @@ const UncontrolledForm = () => {
   };
   return (
     <div>
-      <p>Form</p>
+      <p>Uncontrolled Form</p>
       <Link to="/">To Main page</Link>
       <form
         onSubmit={(e) => handleData(e as unknown as inputdata)}

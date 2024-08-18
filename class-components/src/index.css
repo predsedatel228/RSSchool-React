@@ -122,3 +122,33 @@ label {
   align-items: center;
   text-align: center;
 }
+
+.forms-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-item {
+  width: 200px;
+  border: 1px solid #f9f9f9;
+  padding: 10px;
+  box-shadow: 0px 10px 22px 3px rgba(0,0,0,0.75);
+}
+
+.forms {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+.form-item_image {
+  width: 90%;
+}
+
+.link-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
