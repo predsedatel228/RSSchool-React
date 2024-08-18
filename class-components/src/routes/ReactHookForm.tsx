@@ -5,6 +5,8 @@ import { IForm } from '../types';
 import { validation } from '../validation';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../store/store';
+import { useState } from 'react';
+import PasswordStrengthMeter from '../components/PasswordStrength';
 
 const ReactHookForm = () => {
   const {
@@ -20,6 +22,7 @@ const ReactHookForm = () => {
     console.log(data);
   };
   const countries = useSelector((state: IRootState) => state.countriesSlice);
+  const [password, setPassword] = useState('');
   return (
     <div>
       <p>React hook form</p>
@@ -55,8 +58,9 @@ const ReactHookForm = () => {
 
         <div className="form-field">
           <label htmlFor="password">Password</label>
-          <input type="password" id={'password'} {...register('password')} />
+          <input type="password" id={'password'} {...register('password', { onChange: (e) => setPassword(e.target.value) })} />
         </div>
+        <PasswordStrengthMeter password={password} />
         <span className="error-message">
           {errors.password && errors.password.message}
         </span>
